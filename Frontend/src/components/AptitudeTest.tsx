@@ -9,8 +9,9 @@ import { Brain, Clock, CheckCircle } from "lucide-react";
 interface Question {
   id: number;
   question: string;
-  options: string[];
+  options?: string[];
   category: string;
+  type: 'multiple-choice' | 'rating';
 }
 
 interface AptitudeTestProps {
@@ -23,49 +24,98 @@ const questions: Question[] = [
     id: 1,
     question: "What type of activities do you enjoy most?",
     options: ["Solving mathematical problems", "Reading and writing", "Drawing and designing", "Working with people"],
-    category: "interests"
+    category: "interests",
+    type: "multiple-choice"
   },
   {
     id: 2,
     question: "Which subject did you perform best in during school?",
     options: ["Mathematics", "Science", "English/Literature", "Social Studies"],
-    category: "academic"
+    category: "academic",
+    type: "multiple-choice"
   },
   {
     id: 3,
-    question: "In group projects, you typically:",
-    options: ["Lead the team", "Handle research and analysis", "Manage coordination", "Provide creative ideas"],
-    category: "personality"
+    question: "I am the life of the party",
+    category: "personality",
+    type: "rating"
   },
   {
     id: 4,
-    question: "Your ideal work environment would be:",
-    options: ["Laboratory or technical facility", "Office with team collaboration", "Creative studio", "Field work or travel"],
-    category: "work_style"
+    question: "I don't talk a lot",
+    category: "personality",
+    type: "rating"
   },
   {
     id: 5,
-    question: "When solving problems, you prefer to:",
-    options: ["Use logical step-by-step approach", "Think creatively and innovatively", "Research thoroughly first", "Discuss with others"],
-    category: "problem_solving"
+    question: "I feel comfortable around people",
+    category: "personality",
+    type: "rating"
   },
   {
     id: 6,
-    question: "Which activity sounds most appealing?",
-    options: ["Building or fixing things", "Teaching or helping others", "Managing a business", "Creating art or content"],
-    category: "interests"
+    question: "I like to keep in the background",
+    category: "personality",
+    type: "rating"
   },
   {
     id: 7,
-    question: "Your strength lies in:",
-    options: ["Analytical thinking", "Communication skills", "Creative expression", "Leadership abilities"],
-    category: "strengths"
+    question: "I start conversations",
+    category: "personality",
+    type: "rating"
   },
   {
     id: 8,
+    question: "I have little to say",
+    category: "personality",
+    type: "rating"
+  },
+  {
+    id: 9,
+    question: "I talk to many different people at parties",
+    category: "personality",
+    type: "rating"
+  },
+  {
+    id: 10,
+    question: "I don't like to draw attention to myself",
+    category: "personality",
+    type: "rating"
+  },
+  {
+    id: 11,
+    question: "Your ideal work environment would be:",
+    options: ["Laboratory or technical facility", "Office with team collaboration", "Creative studio", "Field work or travel"],
+    category: "work_style",
+    type: "multiple-choice"
+  },
+  {
+    id: 12,
+    question: "When solving problems, you prefer to:",
+    options: ["Use logical step-by-step approach", "Think creatively and innovatively", "Research thoroughly first", "Discuss with others"],
+    category: "problem_solving",
+    type: "multiple-choice"
+  },
+  {
+    id: 13,
+    question: "Which activity sounds most appealing?",
+    options: ["Building or fixing things", "Teaching or helping others", "Managing a business", "Creating art or content"],
+    category: "interests",
+    type: "multiple-choice"
+  },
+  {
+    id: 14,
+    question: "Your strength lies in:",
+    options: ["Analytical thinking", "Communication skills", "Creative expression", "Leadership abilities"],
+    category: "strengths",
+    type: "multiple-choice"
+  },
+  {
+    id: 15,
     question: "You would be most satisfied working in:",
     options: ["Technology sector", "Healthcare/Education", "Business/Finance", "Arts/Media"],
-    category: "career_preference"
+    category: "career_preference",
+    type: "multiple-choice"
   }
 ];
 
@@ -123,24 +173,52 @@ export const AptitudeTest = ({ onComplete, onBack }: AptitudeTestProps) => {
               <div className="bg-primary/5 p-6 rounded-lg border-l-4 border-primary">
                 <h3 className="text-lg font-semibold text-primary mb-4">{question.question}</h3>
                 
-                <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer}>
-                  <div className="space-y-3">
-                    {question.options.map((option, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent/10 transition-colors"
-                      >
-                        <RadioGroupItem value={option} id={`option-${index}`} />
-                        <Label 
-                          htmlFor={`option-${index}`}
-                          className="flex-1 cursor-pointer text-base"
+{question.type === "multiple-choice" ? (
+                  <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer}>
+                    <div className="space-y-3">
+                      {question.options?.map((option, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent/10 transition-colors"
                         >
-                          {option}
-                        </Label>
-                      </div>
-                    ))}
+                          <RadioGroupItem value={option} id={`option-${index}`} />
+                          <Label 
+                            htmlFor={`option-${index}`}
+                            className="flex-1 cursor-pointer text-base"
+                          >
+                            {option}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </RadioGroup>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                      <span>Strongly Disagree</span>
+                      <span>Strongly Agree</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-4">
+                      {[1, 2, 3, 4, 5].map((rating) => (
+                        <div key={rating} className="flex flex-col items-center space-y-2">
+                          <Label className="text-sm font-medium">{rating}</Label>
+                          <div
+                            className={`w-12 h-12 rounded-full border-2 cursor-pointer flex items-center justify-center transition-all ${
+                              selectedAnswer === rating.toString()
+                                ? "border-primary bg-primary text-white"
+                                : "border-muted hover:border-primary/50"
+                            }`}
+                            onClick={() => setSelectedAnswer(rating.toString())}
+                          >
+                            {selectedAnswer === rating.toString() && (
+                              <CheckCircle className="w-6 h-6" />
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </RadioGroup>
+                )}
               </div>
 
               <div className="flex justify-between items-center pt-4">
