@@ -1,6 +1,6 @@
-# Career Guidance Platform using ML  
+# 🎓 Career Guidance Platform using ML  
 
-## Overview  
+## 📌 Overview  
 Many students struggle to choose the career career path after school due to **lack of awareness about career opportunities, subject alignment, and available colleges**.  
 
 Our solution is an **AI-powered career guidance platform** that analyzes:  
@@ -16,17 +16,17 @@ This helps students make **informed career decisions** and increases enrollment 
 
 ---
 
-## Features  
-- ML-based career recommendations using academic + aptitude data  
-- Interactive aptitude test covering reasoning, logic, and aptitude skills  
-- College recommendation engine (with filters for location, affordability, and ranking)  
-- Student-friendly dashboard for personalized insights  
-- Scalable and self-improving model that learns from new data over time  
-- Privacy-first design with encrypted student data  
+## 🚀 Features  
+- ✅ ML-based career recommendations using academic + aptitude data  
+- ✅ Interactive aptitude test covering reasoning, logic, and aptitude skills  
+- ✅ College recommendation engine (with filters for location, affordability, and ranking)  
+- ✅ Student-friendly dashboard for personalized insights  
+- ✅ Scalable and self-improving model that learns from new data over time  
+- ✅ Privacy-first design with encrypted student data  
 
 ---
 
-## System Architecture  
+## 🏗️ System Architecture  
 1. **Input Layer**  
    - Academic marks (school records / student input)  
    - Aptitude test results  
@@ -42,7 +42,7 @@ This helps students make **informed career decisions** and increases enrollment 
 
 ---
 
-## Tech Stack  
+## ⚙️ Tech Stack  
 - **Frontend:** React / HTML-CSS-JS (for student dashboard)  
 - **Backend:** Python (Flask / Django)  
 - **Machine Learning:** Scikit-learn, TensorFlow/PyTorch  
@@ -52,7 +52,7 @@ This helps students make **informed career decisions** and increases enrollment 
 
 ---
 
-## Feasibility  
+## 📊 Feasibility  
 - **Availability of data** – Academic marks and public college datasets are accessible  
 - **Simple and proven tech** – Built with open-source ML libraries  
 - **Low cost** – Small team can develop in phases with cloud support  
