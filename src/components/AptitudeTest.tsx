@@ -122,20 +122,23 @@ const questions: Question[] = [
 export const AptitudeTest = ({ onComplete, onBack }: AptitudeTestProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [selectedAnswer, setSelectedAnswer] = useState("");
+  
+  const question = questions[currentQuestion];
+  const selectedAnswer = answers[question.id] || "";
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
+  const handleAnswerChange = (value: string) => {
+    setAnswers(prev => ({ ...prev, [question.id]: value }));
+  };
+
   const handleNext = () => {
     if (selectedAnswer) {
-      setAnswers(prev => ({ ...prev, [questions[currentQuestion].id]: selectedAnswer }));
-      
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
-        setSelectedAnswer("");
       } else {
         // Test completed
-        onComplete({ ...answers, [questions[currentQuestion].id]: selectedAnswer });
+        onComplete(answers);
       }
     }
   };
@@ -143,11 +146,8 @@ export const AptitudeTest = ({ onComplete, onBack }: AptitudeTestProps) => {
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
-      setSelectedAnswer(answers[questions[currentQuestion - 1].id] || "");
     }
   };
-
-  const question = questions[currentQuestion];
 
   return (
     <section className="py-12 px-4 bg-gradient-card min-h-screen">
@@ -173,8 +173,8 @@ export const AptitudeTest = ({ onComplete, onBack }: AptitudeTestProps) => {
               <div className="bg-primary/5 p-6 rounded-lg border-l-4 border-primary">
                 <h3 className="text-lg font-semibold text-primary mb-4">{question.question}</h3>
                 
-{question.type === "multiple-choice" ? (
-                  <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer}>
+                {question.type === "multiple-choice" ? (
+                  <RadioGroup value={selectedAnswer} onValueChange={handleAnswerChange}>
                     <div className="space-y-3">
                       {question.options?.map((option, index) => (
                         <div
@@ -208,7 +208,7 @@ export const AptitudeTest = ({ onComplete, onBack }: AptitudeTestProps) => {
                                 ? "border-primary bg-primary text-white"
                                 : "border-muted hover:border-primary/50"
                             }`}
-                            onClick={() => setSelectedAnswer(rating.toString())}
+                            onClick={() => handleAnswerChange(rating.toString())}
                           >
                             {selectedAnswer === rating.toString() && (
                               <CheckCircle className="w-6 h-6" />
